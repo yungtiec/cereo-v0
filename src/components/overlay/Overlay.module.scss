@@ -1,0 +1,10 @@
+@import "scss/colors";
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 5px solid $primary-color;
+}
