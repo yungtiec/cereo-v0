@@ -3,7 +3,7 @@ import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
 import "normalize.css";
 import "antd/dist/antd.css";
-import "./index.scss";
+import "./launcher.scss";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
@@ -15,7 +15,7 @@ ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById("yuzu")
+  document.getElementById("yuzu-launcher")
 );
 
 // If you want your app to work offline and load faster, you can change
