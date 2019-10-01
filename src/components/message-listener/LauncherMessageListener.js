@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { bindEvent } from "utils";
 
-const MessageListener = ({}) => {
+const LauncherMessageListener = () => {
   useEffect(() => {
     bindEvent(window, "message", function(e) {
-      console.log(e.data);
-      if (e.data.type === "init comment") {
-        console.log("init comment");
+      console.log("launcher: ", e);
+      if (e.data.type === "updateCommentBox") {
+        console.log(" updateCommentBox");
       }
     });
   }, []);
@@ -24,4 +24,4 @@ const actions = {};
 export default connect(
   mapState,
   actions
-)(MessageListener);
+)(LauncherMessageListener);

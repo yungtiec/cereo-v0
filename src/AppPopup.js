@@ -1,21 +1,24 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import { getCommentBoxStatus, toggleCommentBox } from "store-popup";
+import {
+  getCommentBoxStatus,
+  toggleCommentBox,
+  initEnvironment
+} from "store-popup";
+import { PopupMessageListener } from "components";
 
 const AppPopup = props => {
-  const yuzuApp = useRef(null);
-  const { commentBoxIsOpen } = props;
+  const { commentBoxIsOpen, initEnvironment } = props;
 
-  useEffect(() => {
-    const height = yuzuApp.current.clientHeight;
-    const width = yuzuApp.current.clientWidth;
-    window.parent.postMessage({ type: "resizeLauncher", width, height }, "*");
+  useEffect(function() {
+    initEnvironment();
   }, []);
 
   return (
-    <div className="" ref={yuzuApp}>
+    <div className="">
       hello
+      <PopupMessageListener appName="popup" />
       <ToastContainer autoClose={3000} />
     </div>
   );
@@ -28,7 +31,7 @@ const mapState = (state, ownProps) => {
   };
 };
 
-const actions = { toggleCommentBox };
+const actions = { toggleCommentBox, initEnvironment };
 
 export default connect(
   mapState,

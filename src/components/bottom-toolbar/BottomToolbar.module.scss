@@ -16,7 +16,7 @@
   margin-right: 7px;
 }
 
-.FAB {
+.Fab {
   background-color: white;
   color: darken($primary-color, 90%);
   font-size: 16px;
@@ -27,6 +27,11 @@
     background-color: $primary-color;
     color: white;
   }
+}
+
+.FabActive {
+  background-color: $primary-color;
+  color: white;
 }
 
 .BrandTag {

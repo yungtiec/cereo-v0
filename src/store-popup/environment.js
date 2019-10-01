@@ -71,7 +71,6 @@ export function getDeviceInfo() {
  */
 
 export default function environment(state = initialState, action) {
-  getDeviceInfo();
   switch (action.type) {
     case CHANGE_IS_MOBILE:
       return Object.assign({}, state, {

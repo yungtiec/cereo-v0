@@ -3,7 +3,8 @@ import {
   Toolbar,
   Section,
   SwitchLabel,
-  FAB
+  Fab,
+  FabActive
 } from "./BottomToolbar.module.scss";
 import {
   Flex,
@@ -39,13 +40,15 @@ const BottomToolbar = ({
         />
       </div>
       <div className={Section}>
-        <FloatingActionBtn icon="link" styleOverrides={FAB} />
+        <FloatingActionBtn icon="link" overideStyle={Fab} />
         <FloatingActionBtn
           icon="message"
-          styleOverrides={FAB}
+          overideStyle={Fab}
+          active={commentBoxIsOpen}
+          activeStyle={FabActive}
           onClick={toggleCommentBox}
         />
-        <FloatingActionBtn icon="smile" styleOverrides={FAB} />
+        <FloatingActionBtn icon="smile" overideStyle={Fab} />
       </div>
     </div>
   );

@@ -15,6 +15,11 @@ const initialState = {
  */
 export const toggleCommentBox = () => ({ type: TOGGLE_COMMENT_BOX });
 
+export const updateCommentBox = commentBox => ({
+  type: TOGGLE_COMMENT_BOX,
+  commentBox
+});
+
 /**
  * THUNK CREATOR
  */
@@ -25,6 +30,14 @@ export const toggleCommentMode = () => (dispatch, getState) => {
     "*"
   );
   dispatch({ type: TOGGLE_COMMENT_BOX });
+};
+
+export const closeCommentBox = () => dispatch => {
+  window.parent.frames[0].postMessage(
+    { type: "updateCommentBox", commentBox: false },
+    "*"
+  );
+  dispatch({ type: TOGGLE_COMMENT_BOX, commentBox: false });
 };
 
 /**

@@ -15,8 +15,12 @@ const initialState = {
 /**
  * ACTION CREATORS
  */
-export const toggleOverlay = user => ({ type: TOGGLE_OVERLAY });
-export const toggleCommentBox = () => ({ type: TOGGLE_COMMENT_BOX });
+export const toggleOverlay = () => ({ type: TOGGLE_OVERLAY });
+
+export const updateCommentBox = commentBox => ({
+  type: TOGGLE_COMMENT_BOX,
+  commentBox
+});
 
 /**
  * THUNK CREATOR
@@ -28,6 +32,19 @@ export const toggleCommentMode = () => (dispatch, getState) => {
     "*"
   );
   dispatch({ type: TOGGLE_OVERLAY });
+};
+
+export const toggleCommentBox = () => (dispatch, getState) => {
+  const newStatus = !getState().ui.commentBox;
+  window.parent.postMessage(
+    { type: "updateCommentBox", commentBox: newStatus },
+    "*"
+  );
+  window.parent.frames[1].postMessage(
+    { type: "updateCommentBox", commentBox: newStatus },
+    "*"
+  );
+  dispatch(updateCommentBox(newStatus));
 };
 
 /**

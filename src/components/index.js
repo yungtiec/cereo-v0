@@ -8,4 +8,9 @@ export {
   default as RotatedFloatingActionBtn
 } from "./floating-action-buttons/RotatedFloatingActionBtn";
 export { default as BottomToolbar } from "./bottom-toolbar/BottomToolbar";
-export { default as MessageListener } from "./message-listener/MessageListener";
+export {
+  default as LauncherMessageListener
+} from "./message-listener/LauncherMessageListener";
+export {
+  default as PopupMessageListener
+} from "./message-listener/PopupMessageListener";
