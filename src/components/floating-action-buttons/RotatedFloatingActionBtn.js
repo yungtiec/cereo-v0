@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styles from "./RotatedFloatingActionBtn.module.scss";
 import FloatingActionBtn from "./FloatingActionBtn";
 
-const RotatedFloatingActionBtn = ({ icon, text, onClick }) => {
+const RotatedFloatingActionBtn = props => {
   const [offset, setOffset] = useState("-100px");
   const btn = useRef(null);
 
@@ -17,7 +17,7 @@ const RotatedFloatingActionBtn = ({ icon, text, onClick }) => {
       style={{ marginLeft: `-${offset}px` }}
       ref={btn}
     >
-      <FloatingActionBtn text={text} icon={icon} onClick={onClick} />
+      <FloatingActionBtn {...props} />
     </div>
   );
 };

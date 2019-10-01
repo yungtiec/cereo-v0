@@ -81,8 +81,8 @@ const createApp = () => {
   });
 
   // sends index.html
-  app.use("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "public/index.html"));
+  app.use("/launcher", (req, res) => {
+    res.sendFile(path.join(__dirname, "..", "public/launcher.html"));
   });
 
   // error handling endware

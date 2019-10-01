@@ -1,8 +1,11 @@
+import { deviceDetector } from "../utils";
+
 /**
  * ACTION TYPES
  */
 export const CHANGE_WIDTH_AND_HEIGHT = "environment.CHANGE_WIDTH_AND_HEIGHT";
 export const CHANGE_IS_MOBILE = "environment.CHANGE_IS_MOBILE";
+export const GET_DEVICE_INFO = "environment.GET_DEVICE_INFO";
 
 /**
  * INITIAL STATE
@@ -10,7 +13,8 @@ export const CHANGE_IS_MOBILE = "environment.CHANGE_IS_MOBILE";
 const initialState = {
   isMobile: false,
   height: null,
-  width: null
+  width: null,
+  deviceInfo: {}
 };
 
 /**
@@ -39,10 +43,26 @@ export function initEnvironment() {
 
     dispatch(changeIsMobile(isMobile));
     dispatch(changeWidthAndHeight(window.innerHeight, window.innerWidth));
+    dispatch(getDeviceInfo());
 
     window.onresize = () => {
       dispatch(changeWidthAndHeight(window.innerHeight, window.innerWidth));
     };
+  };
+}
+
+export function getDeviceInfo() {
+  return dispatch => {
+    const { os, browser } = deviceDetector.init();
+    const deviceInfo = {
+      os: `${os.name} ${os.version}`,
+      browser: `${browser.name} ${browser.version}`,
+      userAgent: window.navigator.userAgent,
+      appVersion: window.navigator.appVersion,
+      platform: window.navigator.platform,
+      vendor: window.navigator.vendor
+    };
+    dispatch({ type: GET_DEVICE_INFO, deviceInfo });
   };
 }
 
@@ -51,6 +71,7 @@ export function initEnvironment() {
  */
 
 export default function environment(state = initialState, action) {
+  getDeviceInfo();
   switch (action.type) {
     case CHANGE_IS_MOBILE:
       return Object.assign({}, state, {
@@ -63,6 +84,11 @@ export default function environment(state = initialState, action) {
         width: action.width
       });
 
+    case GET_DEVICE_INFO:
+      return {
+        ...state,
+        deviceInfo: action.deviceInfo
+      };
     default:
       return state;
   }

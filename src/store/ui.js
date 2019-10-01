@@ -2,21 +2,33 @@
  * ACTION TYPES
  */
 const TOGGLE_OVERLAY = "TOGGLE_OVERLAY";
-const TOGGLE_SIDEBAR = "TOGGLE_SIDEBAR";
+const TOGGLE_COMMENT_BOX = "TOGGLE_COMMENT_BOX";
 
 /**
  * INITIAL STATE
  */
 const initialState = {
   overlay: false,
-  sidebar: false
+  commentBox: false
 };
 
 /**
  * ACTION CREATORS
  */
 export const toggleOverlay = user => ({ type: TOGGLE_OVERLAY });
-export const toggleSidebar = () => ({ type: TOGGLE_SIDEBAR });
+export const toggleCommentBox = () => ({ type: TOGGLE_COMMENT_BOX });
+
+/**
+ * THUNK CREATOR
+ */
+export const toggleCommentMode = () => (dispatch, getState) => {
+  const currentStatus = getState().ui.overlay;
+  window.parent.postMessage(
+    { type: "updateOverlay", status: !currentStatus },
+    "*"
+  );
+  dispatch({ type: TOGGLE_OVERLAY });
+};
 
 /**
  * REDUCER
@@ -28,10 +40,10 @@ export default function(state = initialState, action) {
         ...state,
         overlay: !state.overlay
       };
-    case TOGGLE_SIDEBAR:
+    case TOGGLE_COMMENT_BOX:
       return {
         ...state,
-        sidebar: !state.sidebar
+        commentBox: !state.commentBox
       };
     default:
       return state;
@@ -43,4 +55,4 @@ export default function(state = initialState, action) {
  */
 export const getOverlayStatus = state => state.ui.overlay;
 
-export const getSidebarStatus = state => state.ui.sidebar;
+export const getCommentBoxStatus = state => state.ui.commentBox;

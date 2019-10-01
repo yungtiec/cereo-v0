@@ -1,9 +1,11 @@
 @import "scss/colors";
 
 .btn {
+  cursor: pointer;
   display: inline-block;
   background-color: $primary-color;
   color: white;
-  padding: 20px;
+  padding: 20.5px 24px;
   text-transform: capitalize;
 }
+
