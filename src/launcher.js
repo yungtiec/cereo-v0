@@ -7,13 +7,13 @@ import "./launcher.scss";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import store from "./store";
-import App from "./App";
+import store from "./store-launcher";
+import AppLauncher from "./AppLauncher";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <AppLauncher />
   </Provider>,
   document.getElementById("yuzu-launcher")
 );

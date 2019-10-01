@@ -2,7 +2,7 @@ import { FloatingActionBtn, RotatedFloatingActionBtn } from "components";
 import React from "react";
 import styles from "./FloatingSider.module.scss";
 import { connect } from "react-redux";
-import { getOverlayStatus, toggleOverlay } from "store";
+import { getOverlayStatus, toggleOverlay } from "store-launcher";
 import { Row, Col } from "antd";
 
 const FloatingSider = ({ overlayIsOpen, toggleOverlay }) => {

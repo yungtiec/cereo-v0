@@ -6,13 +6,13 @@ import "antd/dist/antd.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
-import store from "./store";
-import App from "./App";
+import store from "./store-popup";
+import AppPopup from "./AppPopup";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <AppPopup />
   </Provider>,
   document.getElementById("yuzu-popup")
 );

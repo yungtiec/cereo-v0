@@ -4,13 +4,11 @@ import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { toast } from "react-toastify";
 import environment from "./environment";
-import modal from "./modal";
 import ui from "./ui";
 
 const reducer = combineReducers({
   environment,
-  ui,
-  modal
+  ui
 });
 
 const isDev = process.env.NODE_ENV === "development";
@@ -26,7 +24,6 @@ const store = createStore(reducer, middleware);
 export default store;
 
 export * from "./environment";
-export * from "./modal";
 export * from "./ui";
 
 export const handleError = (err, dispatch) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import { overlay } from "./Overlay.module.scss";
 import { connect } from "react-redux";
-import { getOverlayStatus } from "store";
+import { getOverlayStatus } from "store-launcher";
 
 const Overlay = ({ overlayIsOpen }) =>
   overlayIsOpen ? <div className={overlay}></div> : null;

@@ -66,8 +66,21 @@ const createApp = () => {
   app.use("/auth", require("./auth"));
   app.use("/api", require("./api"));
 
-  // static file-serving middleware
-  app.use(express.static(path.join(__dirname, "..", "public")));
+  const staticFilePath =
+    process.env.NODE_ENV !== "production" ? "public" : "build";
+
+  if (process.env.NODE_ENV === "production") {
+    // static file-serving middleware
+    app.use(express.static(path.join("build")));
+
+    app.use("/launcher", (req, res) => {
+      res.sendFile(path.join(__dirname, "..", "build/launcher.html"));
+    });
+
+    app.use("/popup", (req, res) => {
+      res.sendFile(path.join(__dirname, "..", "build/popup.html"));
+    });
+  }
 
   // any remaining requests with an extension (.js, .css, etc.) send 404
   app.use((req, res, next) => {
@@ -78,11 +91,6 @@ const createApp = () => {
     } else {
       next();
     }
-  });
-
-  // sends index.html
-  app.use("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "public/launcher.html"));
   });
 
   // error handling endware

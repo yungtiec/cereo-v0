@@ -62,6 +62,7 @@ module.exports = function(webpackEnv) {
   const publicPath = isEnvProduction
     ? paths.servedPath
     : isEnvDevelopment && "/";
+
   // Some apps do not use client-side routing with pushState.
   // For these, "homepage" can be set to "." to enable relative asset paths.
   const shouldUseRelativeAssetPaths = publicPath === "./";
@@ -151,7 +152,7 @@ module.exports = function(webpackEnv) {
         : [paths.launcherJs],
       popup: isEnvDevelopment
         ? [require.resolve("react-dev-utils/webpackHotDevClient")].concat(
-            paths.launcherJs
+            paths.popupJs
           )
         : [paths.popupJs]
     },
@@ -247,7 +248,7 @@ module.exports = function(webpackEnv) {
       // https://medium.com/webpack/webpack-4-code-splitting-chunk-graph-and-the-splitchunks-optimization-be739a861366
       splitChunks: {
         chunks: "all",
-        name: false
+        name: "vendor"
       },
       // Keep the runtime chunk separated to enable long term caching
       // https://twitter.com/wSokra/status/969679223278505985
@@ -491,7 +492,7 @@ module.exports = function(webpackEnv) {
           {
             inject: true,
             template: paths.launcherHtml,
-            chunks: ["launcher"],
+            excludeChunks: ["popup"],
             filename: "launcher.html"
           },
           isEnvProduction
@@ -519,6 +520,7 @@ module.exports = function(webpackEnv) {
             inject: true,
             template: paths.popupHtml,
             chunks: ["popup"],
+            excludeChunks: ["launcher"],
             filename: "popup.html"
           },
           isEnvProduction

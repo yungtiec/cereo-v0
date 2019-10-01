@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { YuzuApp } from "./App.module.scss";
+import { YuzuApp } from "./AppLauncher.module.scss";
 import { FlexColumnReverse } from "scss/flex.module.scss";
 import classnames from "classnames";
 import { BottomToolbar, MessageListener } from "components";
@@ -10,18 +10,18 @@ import {
   getOverlayStatus,
   toggleCommentBox,
   toggleCommentMode
-} from "store";
+} from "store-launcher";
 import { ToastContainer } from "react-toastify";
 
-const App = props => {
+const AppLauncher = props => {
   const yuzuApp = useRef(null);
   const { commentBoxIsOpen } = props;
 
   useEffect(() => {
     const height = yuzuApp.current.clientHeight;
     const width = yuzuApp.current.clientWidth;
-    window.parent.postMessage({ type: "resizeIframe", width, height }, "*");
-  }, [commentBoxIsOpen]);
+    window.parent.postMessage({ type: "resizeLauncher", width, height }, "*");
+  }, []);
 
   return (
     <div className={classnames(YuzuApp, FlexColumnReverse)} ref={yuzuApp}>
@@ -46,4 +46,4 @@ const actions = { toggleCommentBox, toggleCommentMode };
 export default connect(
   mapState,
   actions
-)(App);
+)(AppLauncher);
