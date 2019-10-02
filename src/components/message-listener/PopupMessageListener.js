@@ -1,15 +1,39 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { bindEvent } from "utils";
-import { updateCommentBox } from "store-popup";
+import {
+  updateCommentBox,
+  registerUserScreenSize,
+  updateEditorStatus,
+  resetEditor
+} from "store-popup";
 
-const PopupMessageListener = ({ updateCommentBox }) => {
+const PopupMessageListener = ({
+  updateCommentBox,
+  updateEditorStatus,
+  resetEditor,
+  registerUserScreenSize
+}) => {
   useEffect(() => {
     bindEvent(window, "message", function(e) {
-      console.log("popup: ", e);
-      if (e.data.type === "updateCommentBox") {
-        console.log("updateCommentBox");
+      console.log("popup iframe");
+      if (e.data.type === "UPDATE_COMMENT_BOX_STATUS") {
+        console.log("UPDATE_COMMENT_BOX_STATUS");
         updateCommentBox(e.data.commentBox);
+      }
+      if (e.data.type === "OPEN_EDITOR") {
+        updateCommentBox(true);
+        updateEditorStatus(true, e.data.pageInfo);
+      }
+      if (e.data.type === "RESET_EDITOR") {
+        resetEditor();
+      }
+      if (e.data.type === "REGISTER_USER_SCREEN_SIZE") {
+        console.log("REGISTER_USER_SCREEN_SIZE");
+        registerUserScreenSize({
+          screenWidth: e.data.screenWidth,
+          screenHeight: e.data.screenHeight
+        });
       }
     });
   }, []);
@@ -22,7 +46,10 @@ const mapState = (state, ownProps) => {
 };
 
 const actions = {
-  updateCommentBox
+  updateCommentBox,
+  registerUserScreenSize,
+  updateEditorStatus,
+  resetEditor
 };
 
 export default connect(

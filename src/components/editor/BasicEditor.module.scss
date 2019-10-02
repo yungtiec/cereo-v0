@@ -1,0 +1,20 @@
+.FormStyle {
+  margin: 20px;
+}
+
+.BtnContainer {
+  display: inline-block;
+  width: calc(50% - 5px);
+}
+
+.BtnContainerLeft {
+  margin-right: 5px;
+}
+
+.BtnContainerRight {
+  margin-left: 5px;
+}
+
+.TextareaStyle {
+  min-height: 250px !important;
+}

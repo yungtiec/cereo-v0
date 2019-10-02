@@ -1,43 +1,36 @@
 /**
  * ACTION TYPES
  */
-const TOGGLE_COMMENT_BOX = "TOGGLE_COMMENT_BOX";
+const UPDATE_COMMENT_BOX_STATUS = "UPDATE_COMMENT_BOX_STATUS";
+const UPDATE_EDITOR_STATUS = "UPDATE_EDITOR_STATUS";
 
 /**
  * INITIAL STATE
  */
 const initialState = {
-  commentBox: false
+  commentBox: false,
+  editor: false
 };
 
 /**
  * ACTION CREATORS
  */
-export const toggleCommentBox = () => ({ type: TOGGLE_COMMENT_BOX });
+export const toggleCommentBox = () => ({ type: UPDATE_COMMENT_BOX_STATUS });
 
 export const updateCommentBox = commentBox => ({
-  type: TOGGLE_COMMENT_BOX,
+  type: UPDATE_COMMENT_BOX_STATUS,
   commentBox
 });
 
 /**
  * THUNK CREATOR
  */
-export const toggleCommentMode = () => (dispatch, getState) => {
-  const currentStatus = getState().ui.commentBox;
-  window.parent.postMessage(
-    { type: "updateCommentBox", status: !currentStatus },
-    "*"
-  );
-  dispatch({ type: TOGGLE_COMMENT_BOX });
-};
-
 export const closeCommentBox = () => dispatch => {
   window.parent.frames[0].postMessage(
-    { type: "updateCommentBox", commentBox: false },
+    { type: "UPDATE_COMMENT_BOX_STATUS", commentBox: false },
     "*"
   );
-  dispatch({ type: TOGGLE_COMMENT_BOX, commentBox: false });
+  dispatch({ type: UPDATE_COMMENT_BOX_STATUS, commentBox: false });
 };
 
 /**
@@ -45,10 +38,15 @@ export const closeCommentBox = () => dispatch => {
  */
 export default function(state = initialState, action) {
   switch (action.type) {
-    case TOGGLE_COMMENT_BOX:
+    case UPDATE_COMMENT_BOX_STATUS:
       return {
         ...state,
-        commentBox: !state.commentBox
+        commentBox: action.commentBox
+      };
+    case UPDATE_EDITOR_STATUS:
+      return {
+        ...state,
+        editor: action.editor
       };
     default:
       return state;

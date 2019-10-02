@@ -5,10 +5,12 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { toast } from "react-toastify";
 import environment from "./environment";
 import ui from "./ui";
+import editor from "./editor";
 
 const reducer = combineReducers({
   environment,
-  ui
+  ui,
+  editor
 });
 
 const isDev = process.env.NODE_ENV === "development";
@@ -25,6 +27,7 @@ export default store;
 
 export * from "./environment";
 export * from "./ui";
+export * from "./editor";
 
 export const handleError = (err, dispatch) => {
   if (

@@ -11,8 +11,6 @@ const FloatingActionBtn = ({
   active,
   activeStyle
 }) => {
-  console.log(active);
-
   return (
     <div
       onClick={onClick}

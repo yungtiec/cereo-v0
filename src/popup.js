@@ -3,6 +3,7 @@ import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
 import "normalize.css";
 import "antd/dist/antd.css";
+import "./popup.scss";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";

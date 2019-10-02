@@ -14,3 +14,5 @@ export {
 export {
   default as PopupMessageListener
 } from "./message-listener/PopupMessageListener";
+export { default as CommentBox } from "./comment-box/CommentBox";
+export { default as BasicEditor } from "./editor/BasicEditor";

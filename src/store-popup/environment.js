@@ -31,6 +31,11 @@ const changeWidthAndHeight = (height, width) => ({
   width
 });
 
+export const registerUserScreenSize = ({ screenWidth, screenHeight }) => ({
+  type: GET_DEVICE_INFO,
+  deviceInfo: { screenWidth, screenHeight }
+});
+
 /**
  * THUNK CREATORS
  */
@@ -86,7 +91,10 @@ export default function environment(state = initialState, action) {
     case GET_DEVICE_INFO:
       return {
         ...state,
-        deviceInfo: action.deviceInfo
+        deviceInfo: {
+          ...state.deviceInfo,
+          ...action.deviceInfo
+        }
       };
     default:
       return state;
