@@ -5,7 +5,7 @@ const compression = require("compression");
 const session = require("express-session");
 const passport = require("passport");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
-const db = require("./db");
+const db = require("./db").sequelize;
 const sessionStore = new SequelizeStore({ db });
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -65,9 +65,6 @@ const createApp = () => {
   // auth and api routes
   app.use("/auth", require("./auth"));
   app.use("/api", require("./api"));
-
-  const staticFilePath =
-    process.env.NODE_ENV !== "production" ? "public" : "build";
 
   if (process.env.NODE_ENV === "production") {
     // static file-serving middleware

@@ -1,0 +1,26 @@
+{
+  "development": {
+    "username": "yungtienchu",
+    "password": null,
+    "database": "yuzu",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "operatorsAliases": false,
+    "logging": false
+  },
+  "test": {
+    "username": "yungtienchu",
+    "password": null,
+    "database": "yuzu-test",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "operatorsAliases": false,
+    "logging": false
+  },
+  "staging": {
+    "use_env_variable": "DATABASE_URL"
+  },
+  "production": {
+    "use_env_variable": "DATABASE_URL"
+  }
+}
