@@ -18,7 +18,7 @@ module.exports = {
       },
       deviceInfo: {
         type: Sequelize.JSONB,
-        field: "device_ifo"
+        field: "device_info"
       },
       pageInfo: {
         type: Sequelize.JSONB,

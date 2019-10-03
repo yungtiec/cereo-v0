@@ -21,7 +21,7 @@ module.exports = (db, DataTypes) => {
       },
       deviceInfo: {
         type: DataTypes.JSONB,
-        field: "device_ifo"
+        field: "device_info"
       },
       pageInfo: {
         type: DataTypes.JSONB,
@@ -38,6 +38,13 @@ module.exports = (db, DataTypes) => {
         field: "owner_id"
       },
       as: "owner"
+    });
+    Comment.belongsTo(models.session, {
+      foreignKey: {
+        name: "sessionId",
+        field: "session_id"
+      },
+      as: "guestOwner"
     });
     Comment.belongsTo(models.site, {
       foreignKey: {

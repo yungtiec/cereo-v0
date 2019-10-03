@@ -1,4 +1,6 @@
-const createSlug = async ({ baseName, stringToBeHashed }) => {
+const crypto = require("crypto");
+
+const createSlug = ({ baseName, stringToBeHashed }) => {
   const strippedTitle = baseName.replace(/[^a-zA-Z 0-9 -]+/g, "");
   const sha256 = crypto.createHash("sha256");
 

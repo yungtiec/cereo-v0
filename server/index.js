@@ -14,7 +14,7 @@ module.exports = app;
 // This is a global Mocha hook, used for resource cleanup.
 // Otherwise, Mocha v4+ never quits after tests.
 if (process.env.NODE_ENV === "test") {
-  after("close the session store", () => sessionStore.stopExpiringSessions());
+  after("close the session store", () => sessionStore.stopExpiringSessions()); // eslint-disable-line
 }
 
 /**
@@ -56,7 +56,8 @@ const createApp = () => {
       secret: process.env.SESSION_SECRET || "my best friend is Cody",
       store: sessionStore,
       resave: false,
-      saveUninitialized: false
+      saveUninitialized: true,
+      cookie: { httpOnly: true, maxAge: 2419200000 }
     })
   );
   app.use(passport.initialize());

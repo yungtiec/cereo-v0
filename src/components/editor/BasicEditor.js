@@ -8,25 +8,53 @@ import {
   TextareaStyle
 } from "./BasicEditor.module.scss";
 import { Form, Input, Button } from "antd";
+import { connect } from "react-redux";
+import {
+  getEditorStatus,
+  postComment,
+  getDeviceInfo,
+  getPageInfo,
+  resetEditor
+} from "store-popup";
 
 class BasicEditor extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log("Received values of form: ", values);
+      if (!err && values.comment) {
+        this.props.postComment({
+          text: values.comment,
+          deviceInfo: this.props.deviceInfo,
+          pageInfo: this.props.pageInfo
+        });
+        this.props.form.resetFields();
+        this.props.resetEditor();
       }
     });
   };
 
+  handleCancel = e => {
+    e.preventDefault();
+    window.parent.postMessage({ type: "COMMENT_CANCELED" }, "*");
+    this.props.form.resetFields();
+    this.props.resetEditor();
+  };
+
   render() {
-    return (
+    const { editorIsOpen } = this.props;
+    const { getFieldDecorator } = this.props.form;
+
+    return !editorIsOpen ? null : (
       <Form className={FormStyle} onSubmit={this.handleSubmit}>
         <Form.Item label="Leave your feedback">
-          <Input.TextArea
-            className={TextareaStyle}
-            placeholder="Enter comment..."
-          />
+          {getFieldDecorator("comment", {
+            rules: []
+          })(
+            <Input.TextArea
+              className={TextareaStyle}
+              placeholder="Enter comment..."
+            />
+          )}
         </Form.Item>
         <Form.Item>
           <div className={classnames(BtnContainer, BtnContainerLeft)}>
@@ -35,7 +63,12 @@ class BasicEditor extends React.Component {
             </Button>
           </div>
           <div className={classnames(BtnContainer, BtnContainerRight)}>
-            <Button type="normal" block={true} htmlType="button">
+            <Button
+              type="normal"
+              block={true}
+              htmlType="button"
+              onClick={this.handleCancel}
+            >
               Cancel
             </Button>
           </div>
@@ -47,4 +80,18 @@ class BasicEditor extends React.Component {
 
 const WrappedBasicEditor = Form.create({ name: "BasicFrom" })(BasicEditor);
 
-export default WrappedBasicEditor;
+const mapState = (state, ownProps) => {
+  return {
+    ...ownProps,
+    editorIsOpen: getEditorStatus(state),
+    deviceInfo: getDeviceInfo(state),
+    pageInfo: getPageInfo(state)
+  };
+};
+
+const actions = { postComment, resetEditor };
+
+export default connect(
+  mapState,
+  actions
+)(WrappedBasicEditor);

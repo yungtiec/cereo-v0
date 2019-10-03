@@ -22,7 +22,6 @@ const PopupMessageListener = ({
         updateCommentBox(e.data.commentBox);
       }
       if (e.data.type === "OPEN_EDITOR") {
-        updateCommentBox(true);
         updateEditorStatus(true, e.data.pageInfo);
       }
       if (e.data.type === "RESET_EDITOR") {

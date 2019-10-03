@@ -48,7 +48,7 @@ export function initEnvironment() {
 
     dispatch(changeIsMobile(isMobile));
     dispatch(changeWidthAndHeight(window.innerHeight, window.innerWidth));
-    dispatch(getDeviceInfo());
+    dispatch(updateDeviceInfo());
 
     window.onresize = () => {
       dispatch(changeWidthAndHeight(window.innerHeight, window.innerWidth));
@@ -56,7 +56,7 @@ export function initEnvironment() {
   };
 }
 
-export function getDeviceInfo() {
+export function updateDeviceInfo() {
   return dispatch => {
     const { os, browser } = deviceDetector.init();
     const deviceInfo = {
@@ -100,3 +100,5 @@ export default function environment(state = initialState, action) {
       return state;
   }
 }
+
+export const getDeviceInfo = state => state.environment.deviceInfo;

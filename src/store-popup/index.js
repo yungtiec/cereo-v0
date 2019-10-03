@@ -6,11 +6,13 @@ import { toast } from "react-toastify";
 import environment from "./environment";
 import ui from "./ui";
 import editor from "./editor";
+import comment from "./comment";
 
 const reducer = combineReducers({
   environment,
   ui,
-  editor
+  editor,
+  comment
 });
 
 const isDev = process.env.NODE_ENV === "development";
@@ -28,6 +30,7 @@ export default store;
 export * from "./environment";
 export * from "./ui";
 export * from "./editor";
+export * from "./comment";
 
 export const handleError = (err, dispatch) => {
   if (

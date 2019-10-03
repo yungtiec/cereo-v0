@@ -54,3 +54,5 @@ export default function(state = initialState, action) {
  * SELECTOR
  */
 export const getEditorStatus = state => state.editor.status;
+
+export const getPageInfo = state => state.editor.pageInfo;

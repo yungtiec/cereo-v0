@@ -14,6 +14,9 @@ module.exports = (db, DataTypes) => {
       },
       slug: {
         type: DataTypes.TEXT
+      },
+      url: {
+        type: DataTypes.TEXT
       }
     },
     { paranoid: true }
@@ -33,12 +36,16 @@ module.exports = (db, DataTypes) => {
   const setSlug = site => {
     site.slug = createSlug({
       baseName: site.name,
-      stringToBeHashed: site.name + site.id
+      stringToBeHashed: site.name + site.id + site.url
     });
   };
 
-  Site.beforeCreate(site => {
+  const hooks = site => {
     setSlug(site);
-  });
+  };
+
+  Site.beforeCreate(hooks);
+  Site.beforeUpdate(hooks);
+
   return Site;
 };
