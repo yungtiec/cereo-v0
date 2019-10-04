@@ -14,5 +14,13 @@ export {
 export {
   default as PopupMessageListener
 } from "./message-listener/PopupMessageListener";
-export { default as CommentBox } from "./comment-box/CommentBox";
+export { default as CommentItem } from "./comment-item/CommentItem";
+export {
+  default as CommentItemContainer
+} from "./comment-item/CommentItemContainer";
 export { default as BasicEditor } from "./editor/BasicEditor";
+export { default as CommentList } from "./comment-list/CommentList";
+export { default as GreetingOverlay } from "./greeting-overlay/GreetingOverlay";
+export { default as GuestForm } from "./auth-form/GuestForm";
+export { default as AuthForm } from "./auth-form/AuthForm";
+export { default as OnboardMessage } from "./onboard-message/OnboardMessage";

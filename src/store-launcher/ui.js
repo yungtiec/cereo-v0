@@ -2,14 +2,14 @@
  * ACTION TYPES
  */
 const TOGGLE_OVERLAY = "TOGGLE_OVERLAY";
-const UPDATE_COMMENT_BOX_STATUS = "UPDATE_COMMENT_BOX_STATUS";
+const UPDATE_POPUP_STATUS = "UPDATE_POPUP_STATUS";
 
 /**
  * INITIAL STATE
  */
 const initialState = {
-  overlay: false,
-  commentBox: false
+  overlay: true,
+  popup: false
 };
 
 /**
@@ -17,9 +17,9 @@ const initialState = {
  */
 export const toggleOverlay = () => ({ type: TOGGLE_OVERLAY });
 
-export const updateCommentBox = commentBox => ({
-  type: UPDATE_COMMENT_BOX_STATUS,
-  commentBox
+export const updatePopup = popup => ({
+  type: UPDATE_POPUP_STATUS,
+  popup
 });
 
 /**
@@ -34,17 +34,17 @@ export const toggleCommentMode = () => (dispatch, getState) => {
   dispatch({ type: TOGGLE_OVERLAY });
 };
 
-export const toggleCommentBox = () => (dispatch, getState) => {
-  const newStatus = !getState().ui.commentBox;
+export const togglePopup = () => (dispatch, getState) => {
+  const newStatus = !getState().ui.popup;
   window.parent.postMessage(
-    { type: "UPDATE_COMMENT_BOX_STATUS", commentBox: newStatus },
+    { type: "UPDATE_POPUP_STATUS", popup: newStatus },
     "*"
   );
   window.parent.frames[1].postMessage(
-    { type: "UPDATE_COMMENT_BOX_STATUS", commentBox: newStatus },
+    { type: "UPDATE_POPUP_STATUS", popup: newStatus },
     "*"
   );
-  dispatch(updateCommentBox(newStatus));
+  dispatch(updatePopup(newStatus));
 };
 
 /**
@@ -57,10 +57,10 @@ export default function(state = initialState, action) {
         ...state,
         overlay: !state.overlay
       };
-    case UPDATE_COMMENT_BOX_STATUS:
+    case UPDATE_POPUP_STATUS:
       return {
         ...state,
-        commentBox: action.commentBox
+        popup: action.popup
       };
     default:
       return state;
@@ -72,4 +72,4 @@ export default function(state = initialState, action) {
  */
 export const getOverlayStatus = state => state.ui.overlay;
 
-export const getCommentBoxStatus = state => state.ui.commentBox;
+export const getPopupStatus = state => state.ui.popup;

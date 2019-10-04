@@ -43,7 +43,7 @@ module.exports = {
         type: Sequelize.TEXT,
         field: "avatar_url"
       },
-      onboarding: {
+      onboard: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {

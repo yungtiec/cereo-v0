@@ -2,12 +2,13 @@ const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const compression = require("compression");
+const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const passport = require("passport");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const db = require("./db").sequelize;
 const sessionStore = new SequelizeStore({ db });
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5555;
 const app = express();
 module.exports = app;
 
@@ -39,6 +40,16 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
+var sessionConfig = {
+  secret: process.env.SESSION_SECRET || "my best friend is Cody",
+  store: sessionStore,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { httpOnly: true, maxAge: 2419200000 }
+};
+
+if (process.env.NODE_ENV === "production") sessionConfig.cookie.secure = true;
+
 const createApp = () => {
   // logging middleware
   app.use(morgan("dev"));
@@ -50,16 +61,10 @@ const createApp = () => {
   // compression middleware
   app.use(compression());
 
+  app.use(cookieParser());
+
   // session middleware with passport
-  app.use(
-    session({
-      secret: process.env.SESSION_SECRET || "my best friend is Cody",
-      store: sessionStore,
-      resave: false,
-      saveUninitialized: true,
-      cookie: { httpOnly: true, maxAge: 2419200000 }
-    })
-  );
+  app.use(session(sessionConfig));
   app.use(passport.initialize());
   app.use(passport.session());
 

@@ -16,7 +16,7 @@ module.exports = (db, DataTypes) => {
     { tableName: "Sessions" }
   );
   Session.associate = function(models) {
-    Session.hasMany(models.comment, {
+    Session.hasOne(models.guest, {
       foreignKey: {
         name: "sessionId",
         field: "session_id"

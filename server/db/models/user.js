@@ -47,7 +47,7 @@ module.exports = (db, DataTypes) => {
         type: Sequelize.TEXT,
         field: "avatar_url"
       },
-      onboarding: {
+      onboard: {
         type: DataTypes.BOOLEAN
       }
     },

@@ -14,7 +14,9 @@ import {
   postComment,
   getDeviceInfo,
   getPageInfo,
-  resetEditor
+  getEditorValue,
+  updateEditorStatus,
+  resetEditorData
 } from "store-popup";
 
 class BasicEditor extends React.Component {
@@ -22,13 +24,16 @@ class BasicEditor extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err && values.comment) {
-        this.props.postComment({
-          text: values.comment,
-          deviceInfo: this.props.deviceInfo,
-          pageInfo: this.props.pageInfo
-        });
+        if (!this.props.initialValue)
+          this.props.postComment({
+            text: values.comment,
+            deviceInfo: this.props.deviceInfo,
+            pageInfo: this.props.pageInfo
+          });
+        else console.log("edit comment");
         this.props.form.resetFields();
-        this.props.resetEditor();
+        this.props.resetEditorData();
+        this.props.updateEditorStatus(false);
       }
     });
   };
@@ -37,17 +42,19 @@ class BasicEditor extends React.Component {
     e.preventDefault();
     window.parent.postMessage({ type: "COMMENT_CANCELED" }, "*");
     this.props.form.resetFields();
-    this.props.resetEditor();
+    this.props.resetEditorData();
+    this.props.updateEditorStatus(false);
   };
 
   render() {
-    const { editorIsOpen } = this.props;
+    const { editorIsOpen, initialValue } = this.props;
     const { getFieldDecorator } = this.props.form;
 
     return !editorIsOpen ? null : (
       <Form className={FormStyle} onSubmit={this.handleSubmit}>
         <Form.Item label="Leave your feedback">
           {getFieldDecorator("comment", {
+            initialValue,
             rules: []
           })(
             <Input.TextArea
@@ -85,11 +92,12 @@ const mapState = (state, ownProps) => {
     ...ownProps,
     editorIsOpen: getEditorStatus(state),
     deviceInfo: getDeviceInfo(state),
-    pageInfo: getPageInfo(state)
+    pageInfo: getPageInfo(state),
+    initialValue: getEditorValue(state)
   };
 };
 
-const actions = { postComment, resetEditor };
+const actions = { postComment, resetEditorData, updateEditorStatus };
 
 export default connect(
   mapState,

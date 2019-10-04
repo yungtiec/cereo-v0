@@ -15,10 +15,6 @@ module.exports = (db, DataTypes) => {
       resolved: {
         type: DataTypes.BOOLEAN
       },
-      guestName: {
-        type: DataTypes.STRING,
-        field: "guest_name"
-      },
       deviceInfo: {
         type: DataTypes.JSONB,
         field: "device_info"
@@ -39,10 +35,10 @@ module.exports = (db, DataTypes) => {
       },
       as: "owner"
     });
-    Comment.belongsTo(models.session, {
+    Comment.belongsTo(models.guest, {
       foreignKey: {
-        name: "sessionId",
-        field: "session_id"
+        name: "guestId",
+        field: "guest_id"
       },
       as: "guestOwner"
     });

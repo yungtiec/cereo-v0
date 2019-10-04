@@ -17,8 +17,8 @@ import { Switch, Icon } from "antd";
 
 const BottomToolbar = ({
   overlayActivated,
-  commentBoxIsOpen,
-  toggleCommentBox,
+  popupIsOpen,
+  togglePopup,
   toggleCommentMode
 }) => {
   return (
@@ -44,9 +44,9 @@ const BottomToolbar = ({
         <FloatingActionBtn
           icon="message"
           overideStyle={Fab}
-          active={commentBoxIsOpen}
+          active={popupIsOpen}
           activeStyle={FabActive}
-          onClick={toggleCommentBox}
+          onClick={togglePopup}
         />
         <FloatingActionBtn icon="smile" overideStyle={Fab} />
       </div>

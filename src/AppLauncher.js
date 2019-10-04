@@ -4,11 +4,10 @@ import { FlexColumnReverse } from "scss/flex.module.scss";
 import classnames from "classnames";
 import { BottomToolbar, LauncherMessageListener } from "components";
 import { connect } from "react-redux";
-import { Input } from "antd";
 import {
-  getCommentBoxStatus,
+  getPopupStatus,
   getOverlayStatus,
-  toggleCommentBox,
+  togglePopup,
   toggleCommentMode
 } from "store-launcher";
 import { ToastContainer } from "react-toastify";
@@ -27,11 +26,11 @@ const mapState = (state, ownProps) => {
   return {
     ...ownProps,
     overlayActivated: getOverlayStatus(state),
-    commentBoxIsOpen: getCommentBoxStatus(state)
+    popupIsOpen: getPopupStatus(state)
   };
 };
 
-const actions = { toggleCommentBox, toggleCommentMode };
+const actions = { togglePopup, toggleCommentMode };
 
 export default connect(
   mapState,

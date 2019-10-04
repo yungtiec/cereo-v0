@@ -2,30 +2,34 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { bindEvent } from "utils";
 import {
-  updateCommentBox,
+  updatePopup,
   registerUserScreenSize,
   updateEditorStatus,
-  resetEditor
+  updatePageInfo,
+  resetEditorData
 } from "store-popup";
 
 const PopupMessageListener = ({
-  updateCommentBox,
+  updatePopup,
+  updatePageInfo,
   updateEditorStatus,
-  resetEditor,
+  resetEditorData,
   registerUserScreenSize
 }) => {
   useEffect(() => {
     bindEvent(window, "message", function(e) {
       console.log("popup iframe");
-      if (e.data.type === "UPDATE_COMMENT_BOX_STATUS") {
-        console.log("UPDATE_COMMENT_BOX_STATUS");
-        updateCommentBox(e.data.commentBox);
+      if (e.data.type === "UPDATE_POPUP_STATUS") {
+        console.log("UPDATE_POPUP_STATUS");
+        updatePopup(e.data.popup);
       }
       if (e.data.type === "OPEN_EDITOR") {
-        updateEditorStatus(true, e.data.pageInfo);
+        updateEditorStatus(true);
+        updatePageInfo(e.data.pageInfo);
       }
       if (e.data.type === "RESET_EDITOR") {
-        resetEditor();
+        updateEditorStatus(false);
+        resetEditorData();
       }
       if (e.data.type === "REGISTER_USER_SCREEN_SIZE") {
         console.log("REGISTER_USER_SCREEN_SIZE");
@@ -45,10 +49,11 @@ const mapState = (state, ownProps) => {
 };
 
 const actions = {
-  updateCommentBox,
+  updatePopup,
   registerUserScreenSize,
   updateEditorStatus,
-  resetEditor
+  updatePageInfo,
+  resetEditorData
 };
 
 export default connect(

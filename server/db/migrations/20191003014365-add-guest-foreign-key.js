@@ -1,7 +1,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return [
-      queryInterface.addColumn("comments", "session_id", {
+      queryInterface.addColumn("guests", "session_id", {
         type: Sequelize.STRING(36),
         references: {
           model: "Sessions",
@@ -12,6 +12,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return [queryInterface.removeColumn("comments", "session_id")];
+    return [queryInterface.removeColumn("guests", "session_id")];
   }
 };

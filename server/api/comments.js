@@ -7,8 +7,8 @@ router.post("/", async (req, res, next) => {
     const comment = await Comment.create({
       ...req.body,
       siteId: 1,
-      ownerId: req.user ? req.user.id : null,
-      sessionId: req.sessionID
+      ownerId: req.user ? req.user.id : null
+      // sessionId: req.sessionID
     });
     res.send(comment);
   } catch (err) {
@@ -17,14 +17,16 @@ router.post("/", async (req, res, next) => {
 });
 
 router.get("/", async (req, res, next) => {
+  console.log(req.cookies, res.cookies);
   try {
     var where = {
       siteId: 1
     };
-    if (req.user) where.userId = req.user.id;
-    else where.sessionId = req.sessionID;
+    // if (req.user) where.userId = req.user.id;
+    // else where.sessionId = req.sessionID;
     const comments = await Comment.findAll({
       where,
+      order: [["updatedAt", "DESC"]],
       ...req.query
     });
     res.send(comments);

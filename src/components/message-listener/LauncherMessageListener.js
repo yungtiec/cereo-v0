@@ -6,8 +6,8 @@ const LauncherMessageListener = () => {
   useEffect(() => {
     bindEvent(window, "message", function(e) {
       console.log("launcher: ", e);
-      if (e.data.type === "UPDATE_COMMENT_BOX_STATUS") {
-        console.log(" UPDATE_COMMENT_BOX_STATUS");
+      if (e.data.type === "UPDATE_POPUP_STATUS") {
+        console.log(" UPDATE_POPUP_STATUS");
       }
     });
   }, []);

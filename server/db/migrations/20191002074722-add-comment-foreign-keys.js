@@ -14,6 +14,20 @@ module.exports = {
           model: "sites",
           key: "id"
         }
+      }),
+      queryInterface.addColumn("comments", "parentId", {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "comments",
+          key: "id"
+        }
+      }),
+      queryInterface.addColumn("comments", "guest_id", {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "guests",
+          key: "id"
+        }
       })
     ];
   },
@@ -21,7 +35,9 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
     return [
       queryInterface.removeColumn("comments", "owner_id"),
-      queryInterface.removeColumn("comments", "site_id")
+      queryInterface.removeColumn("comments", "site_id"),
+      queryInterface.removeColumn("comments", "parentId"),
+      queryInterface.removeColumn("comments", "guest_id")
     ];
   }
 };

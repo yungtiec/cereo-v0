@@ -1,28 +1,34 @@
 /**
  * ACTION TYPES
  */
-const UPDATE_EDITOR_STATUS = "UPDATE_EDITOR_STATUS";
 const RESET_EDITOR = "RESET_EDITOR";
+const UPDATE_PAGE_INFO = "UPDATE_PAGE_INFO";
+const SET_EDITOR_VALUE = "SET_EDITOR_VALUE";
 
 /**
  * INITIAL STATE
  */
 const initialState = {
-  status: false,
-  pageInfo: {}
+  pageInfo: {},
+  value: ""
 };
 
 /**
  * ACTION CREATORS
  */
-export const updateEditorStatus = (editorStatus, pageInfo) => ({
-  type: UPDATE_EDITOR_STATUS,
-  editorStatus,
+
+export const updatePageInfo = pageInfo => ({
+  type: UPDATE_PAGE_INFO,
   pageInfo
 });
 
-export const resetEditor = () => ({
+export const resetEditorData = () => ({
   type: RESET_EDITOR
+});
+
+export const setEditorValue = value => ({
+  type: SET_EDITOR_VALUE,
+  value
 });
 
 /**
@@ -34,14 +40,18 @@ export const resetEditor = () => ({
  */
 export default function(state = initialState, action) {
   switch (action.type) {
-    case UPDATE_EDITOR_STATUS:
+    case UPDATE_PAGE_INFO:
       return {
         ...state,
-        status: action.editorStatus,
         pageInfo: {
           ...state.pageInfo,
           ...action.pageInfo
         }
+      };
+    case SET_EDITOR_VALUE:
+      return {
+        ...state,
+        value: action.value
       };
     case RESET_EDITOR:
       return initialState;
@@ -53,6 +63,7 @@ export default function(state = initialState, action) {
 /**
  * SELECTOR
  */
-export const getEditorStatus = state => state.editor.status;
 
 export const getPageInfo = state => state.editor.pageInfo;
+
+export const getEditorValue = state => state.editor.value;

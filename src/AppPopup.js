@@ -1,21 +1,53 @@
 import React, { useEffect, Fragment } from "react";
 import { connect } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import { initEnvironment, fetchComments } from "store-popup";
-import { PopupMessageListener, CommentBox, BasicEditor } from "components";
+import {
+  initEnvironment,
+  fetchComments,
+  me,
+  getGreetingOverlayStatus
+} from "store-popup";
+import {
+  PopupMessageListener,
+  CommentList,
+  BasicEditor,
+  CommentItemContainer,
+  GuestForm,
+  AuthForm,
+  OnboardMessage
+} from "components";
+import {
+  WidgetContainer,
+  FullScreenContainer,
+  GreetingModal
+} from "./AppPopup.module.scss";
 
 const AppPopup = props => {
-  const { initEnvironment } = props;
+  const { initEnvironment, fetchComments, me, showGreetingOverlay } = props;
 
   useEffect(function() {
     initEnvironment();
     fetchComments();
+    me();
   }, []);
 
   return (
     <Fragment>
-      <BasicEditor />
-      <CommentBox {...props} />
+      {showGreetingOverlay ? (
+        <div className={FullScreenContainer}>
+          <div className={GreetingModal}>
+            <GuestForm />
+            <AuthForm />
+            <OnboardMessage />
+          </div>
+        </div>
+      ) : (
+        <div className={WidgetContainer}>
+          <BasicEditor />
+          <CommentList />
+          <CommentItemContainer />
+        </div>
+      )}
       <PopupMessageListener appName="popup" />
       <ToastContainer autoClose={3000} />
     </Fragment>
@@ -24,11 +56,17 @@ const AppPopup = props => {
 
 const mapState = (state, ownProps) => {
   return {
-    ...ownProps
+    ...ownProps,
+    showGreetingOverlay: getGreetingOverlayStatus(state)
   };
 };
 
-const actions = { initEnvironment, fetchComments };
+const actions = {
+  initEnvironment,
+  fetchComments,
+  me,
+  getGreetingOverlayStatus
+};
 
 export default connect(
   mapState,

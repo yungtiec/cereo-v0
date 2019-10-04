@@ -12,10 +12,6 @@ module.exports = {
       resolved: {
         type: Sequelize.BOOLEAN
       },
-      guestName: {
-        type: Sequelize.STRING,
-        field: "guest_name"
-      },
       deviceInfo: {
         type: Sequelize.JSONB,
         field: "device_info"

@@ -13,11 +13,11 @@ export const COMMENT_DELETED = "COMMENT_DELETED";
  */
 const initialState = {
   ids: [],
-  byIds: {},
+  byId: {},
   isFetching: false,
   hasMore: true,
   offset: 0,
-  limit: 5
+  limit: 3
 };
 
 export const requestComments = () => ({ type: COMMENTS_REQUESTED });
@@ -56,7 +56,7 @@ export const fetchComments = () => async (dispatch, getState) => {
         }
       })
       .then(res => res.data);
-    const commentIds = Object.keys(comments);
+    const commentIds = comments.map(c => c.id);
     const commentsById = comments.reduce(
       (obj, comment) => Object.assign(obj, { [comment.id]: comment }),
       {}
@@ -72,6 +72,7 @@ export const fetchComments = () => async (dispatch, getState) => {
         ? state.comment.offset + state.comment.limit
         : state.comment.offset
     });
+    return comments;
   } catch (err) {
     console.log(err);
   }
@@ -90,8 +91,8 @@ export default function(state = initialState, action) {
     case COMMENTS_FETCH_SUCCESS:
       return {
         ...state,
-        byIds: {
-          ...state.byIds,
+        byId: {
+          ...state.byId,
           ...action.commentsById
         },
         ids: state.ids.concat(action.commentIds || []),
@@ -102,8 +103,8 @@ export default function(state = initialState, action) {
     case COMMENT_ADDED:
       return {
         ...state,
-        byIds: {
-          ...state.byIds,
+        byId: {
+          ...state.byId,
           [action.comment.id]: action.comment
         },
         ids: [action.comment.id].concat(state.ids)
@@ -113,5 +114,12 @@ export default function(state = initialState, action) {
   }
 }
 
+export const isFetchingComments = state => state.comment.isFetching;
+
 export const getComments = state =>
-  state.comment.ids.map(cid => state.comment.byIds[cid]);
+  state.comment.ids.map(cid => state.comment.byId[cid]);
+
+export const hasMoreComments = state => state.comment.hasMore;
+
+export const getCurrentCommentItem = state =>
+  state.ui.commentItem && state.comment.byId[state.ui.commentItem];

@@ -7,10 +7,12 @@ import environment from "./environment";
 import ui from "./ui";
 import editor from "./editor";
 import comment from "./comment";
+import me from "./me";
 
 const reducer = combineReducers({
   environment,
   ui,
+  me,
   editor,
   comment
 });
@@ -31,6 +33,7 @@ export * from "./environment";
 export * from "./ui";
 export * from "./editor";
 export * from "./comment";
+export * from "./me";
 
 export const handleError = (err, dispatch) => {
   if (
