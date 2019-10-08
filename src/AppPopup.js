@@ -11,7 +11,7 @@ import {
   PopupMessageListener,
   CommentList,
   BasicEditor,
-  CommentItemContainer,
+  CommentThreadWithReplyEditor,
   GuestForm,
   AuthForm,
   OnboardMessage
@@ -45,7 +45,7 @@ const AppPopup = props => {
         <div className={WidgetContainer}>
           <BasicEditor />
           <CommentList />
-          <CommentItemContainer />
+          <CommentThreadWithReplyEditor />
         </div>
       )}
       <PopupMessageListener appName="popup" />

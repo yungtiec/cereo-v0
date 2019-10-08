@@ -68,6 +68,7 @@ router.post("/guest", async (req, res, next) => {
       ...req.body,
       sessionId: req.sessionID
     });
+    req.session.guestId = guest.id;
     res.sendStatus(200);
   } catch (err) {
     next(err);

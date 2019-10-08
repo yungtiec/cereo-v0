@@ -124,3 +124,5 @@ export default function(state = initialState, action) {
       return state;
   }
 }
+
+export const getMe = state => state.me;

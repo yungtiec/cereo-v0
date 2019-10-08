@@ -1,20 +1,22 @@
 import React from "react";
 import classnames from "classnames";
 import {
-  FormStyle,
+  BasicEditorStyle,
+  FormRow,
   BtnContainer,
   BtnContainerLeft,
   BtnContainerRight,
   TextareaStyle
-} from "./BasicEditor.module.scss";
+} from "./Editor.module.scss";
 import { Form, Input, Button } from "antd";
 import { connect } from "react-redux";
 import {
   getEditorStatus,
   postComment,
+  putComment,
   getDeviceInfo,
   getPageInfo,
-  getEditorValue,
+  getEditorData,
   updateEditorStatus,
   resetEditorData
 } from "store-popup";
@@ -23,14 +25,19 @@ class BasicEditor extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      if (!err && values.comment) {
+      if (!err && values.text) {
         if (!this.props.initialValue)
           this.props.postComment({
-            text: values.comment,
+            text: values.text,
             deviceInfo: this.props.deviceInfo,
             pageInfo: this.props.pageInfo
           });
-        else console.log("edit comment");
+        else {
+          this.props.putComment({
+            commentId: this.props.commentId,
+            data: { text: values.text }
+          });
+        }
         this.props.form.resetFields();
         this.props.resetEditorData();
         this.props.updateEditorStatus(false);
@@ -51,9 +58,9 @@ class BasicEditor extends React.Component {
     const { getFieldDecorator } = this.props.form;
 
     return !editorIsOpen ? null : (
-      <Form className={FormStyle} onSubmit={this.handleSubmit}>
-        <Form.Item label="Leave your feedback">
-          {getFieldDecorator("comment", {
+      <Form className={BasicEditorStyle} onSubmit={this.handleSubmit}>
+        <Form.Item label="Leave your feedback" className={FormRow}>
+          {getFieldDecorator("text", {
             initialValue,
             rules: []
           })(
@@ -85,19 +92,26 @@ class BasicEditor extends React.Component {
   }
 }
 
-const WrappedBasicEditor = Form.create({ name: "BasicFrom" })(BasicEditor);
+const WrappedBasicEditor = Form.create({ name: "BasicForm" })(BasicEditor);
 
 const mapState = (state, ownProps) => {
+  const { commentId, value } = getEditorData(state);
   return {
     ...ownProps,
     editorIsOpen: getEditorStatus(state),
     deviceInfo: getDeviceInfo(state),
     pageInfo: getPageInfo(state),
-    initialValue: getEditorValue(state)
+    initialValue: value,
+    commentId
   };
 };
 
-const actions = { postComment, resetEditorData, updateEditorStatus };
+const actions = {
+  postComment,
+  putComment,
+  resetEditorData,
+  updateEditorStatus
+};
 
 export default connect(
   mapState,

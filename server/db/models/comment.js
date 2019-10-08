@@ -50,71 +50,87 @@ module.exports = (db, DataTypes) => {
     });
   };
   Comment.loadScopes = function(models) {
-    // var includeBasicMetadata = [
-    //   {
-    //     model: models.user,
-    //     as: "owner",
-    //     attributes: ["id", "email", "name", "username"]
-    //   }
-    // ];
-    // Comment.addScope("main", function({
-    //   extendedWhere,
-    //   extendedInclude,
-    //   extendedAttributes
-    // }) {
-    //   var include = includeBasicMetadata;
-    //   var attributes = [
-    //     "id",
-    //     "text",
-    //     "ownerId",
-    //     "guestName",
-    //     "createdAt",
-    //     "updatedAt",
-    //     [
-    //       Sequelize.literal(
-    //         `(SELECT COUNT(*) FROM commentsancestors WHERE commentsancestors."ancestorId" = comment.id)`
-    //       ),
-    //       "numReplies"
-    //     ]
-    //   ];
-    //   var query = { include, attributes };
-    //   if (extendedWhere) query.where = extendedWhere;
-    //   if (extendedInclude) query.include = include.concat(extendedInclude);
-    //   if (extendedAttributes)
-    //     query.attributes = attributes.concat(extendedAttributes);
-    //   return query;
-    // });
-    // Comment.addScope("withReplies", function() {
-    //   return {
-    //     include: [
-    //       {
-    //         model: models.comment,
-    //         required: false,
-    //         include: [
-    //           {
-    //             model: models.user,
-    //             as: "owner",
-    //             attributes: ["id", "email", "name", "username"]
-    //           },
-    //           {
-    //             model: models.comment,
-    //             as: "parent",
-    //             required: false,
-    //             include: [
-    //               {
-    //                 model: models.user,
-    //                 as: "owner",
-    //                 attributes: ["id", "email", "name", "username"]
-    //               }
-    //             ]
-    //           }
-    //         ],
-    //         as: "descendents"
-    //       }
-    //     ],
-    //     order: [["createdAt", "DESC"]]
-    //   };
-    // });
+    var includeBasicMetadata = [
+      {
+        model: models.user,
+        as: "owner",
+        attributes: ["id", "email", "name"]
+      },
+      {
+        model: models.guest,
+        as: "guestOwner",
+        attributes: ["id", "email", "name"]
+      }
+    ];
+    Comment.addScope("main", function({ where, include, attributes }) {
+      var defaultInclude = includeBasicMetadata;
+      var defaultAttributes = [
+        "id",
+        "text",
+        "ownerId",
+        "guestId",
+        "deviceInfo",
+        "pageInfo",
+        "createdAt",
+        "updatedAt",
+        [
+          Sequelize.literal(
+            `(SELECT COUNT(*) FROM commentsancestors WHERE commentsancestors."ancestorId" = comment.id)`
+          ),
+          "numReplies"
+        ]
+      ];
+      var query = { include: defaultInclude, attributes: defaultAttributes };
+      if (where) query.where = where;
+      if (include) query.include = defaultInclude.concat(include);
+      if (attributes) query.attributes = defaultAttributes.concat(attributes);
+      return query;
+    });
+    Comment.addScope("withReplies", function() {
+      return {
+        include: [
+          {
+            model: models.comment,
+            required: false,
+            include: [
+              {
+                model: models.user,
+                as: "owner",
+                required: false,
+                attributes: ["id", "email", "name"]
+              },
+              {
+                model: models.guest,
+                as: "guestOwner",
+                required: false,
+                attributes: ["id", "email", "name"]
+              },
+              {
+                model: models.comment,
+                as: "parent",
+                required: false,
+                include: [
+                  {
+                    model: models.user,
+                    as: "owner",
+                    required: false,
+                    attributes: ["id", "email", "name"]
+                  },
+                  {
+                    model: models.guest,
+                    as: "guestOwner",
+                    required: false,
+                    attributes: ["id", "email", "name"]
+                  }
+                ]
+              }
+            ],
+            as: "descendents"
+          }
+        ],
+        order: [["createdAt", "DESC"]]
+      };
+    });
   };
   return Comment;
 };

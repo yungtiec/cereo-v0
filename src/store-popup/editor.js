@@ -26,9 +26,10 @@ export const resetEditorData = () => ({
   type: RESET_EDITOR
 });
 
-export const setEditorValue = value => ({
+export const setEditorData = ({ commentId, value }) => ({
   type: SET_EDITOR_VALUE,
-  value
+  value,
+  commentId
 });
 
 /**
@@ -51,7 +52,8 @@ export default function(state = initialState, action) {
     case SET_EDITOR_VALUE:
       return {
         ...state,
-        value: action.value
+        value: action.value,
+        commentId: action.commentId
       };
     case RESET_EDITOR:
       return initialState;
@@ -66,4 +68,7 @@ export default function(state = initialState, action) {
 
 export const getPageInfo = state => state.editor.pageInfo;
 
-export const getEditorValue = state => state.editor.value;
+export const getEditorData = state => ({
+  commentId: state.editor.commentId,
+  value: state.editor.value
+});

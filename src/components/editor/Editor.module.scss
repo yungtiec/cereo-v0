@@ -1,5 +1,9 @@
-.FormStyle {
+.BasicEditorStyle {
   margin: 20px;
+}
+
+.ReplyEditorStyle {
+  margin: 12px;
 }
 
 .BtnContainer {
@@ -17,4 +21,9 @@
 
 .TextareaStyle {
   min-height: 250px !important;
+  margin-bottom: 0;
+}
+
+.FormRow {
+  margin-bottom: 12px;
 }

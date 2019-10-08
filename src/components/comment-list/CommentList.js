@@ -3,12 +3,7 @@ import { connect } from "react-redux";
 import { Comment, Tooltip, List, Avatar, Spin } from "antd";
 import moment from "moment";
 import InfiniteScroll from "react-infinite-scroller";
-import classnames from "classnames";
 import { ScrollParentStyle } from "./CommentList.module.scss";
-import {
-  CommentItemStyle,
-  CommentItemHover
-} from "../comment-item/CommentItem.module.scss";
 import {
   getCommentListStatus,
   updateCommentListStatus,
@@ -46,10 +41,10 @@ const CommentList = ({
           renderItem={comment => {
             return (
               <CommentItem
-                classNames={classnames(CommentItemStyle, CommentItemHover)}
                 key={`comment-${comment.id}`}
                 onClick={() => updateCommentItemStatus(comment.id)}
                 comment={comment}
+                hoverStyle={true}
               />
             );
           }}

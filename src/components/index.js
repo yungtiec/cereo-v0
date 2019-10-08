@@ -16,11 +16,13 @@ export {
 } from "./message-listener/PopupMessageListener";
 export { default as CommentItem } from "./comment-item/CommentItem";
 export {
-  default as CommentItemContainer
-} from "./comment-item/CommentItemContainer";
+  default as CommentThreadWithReplyEditor
+} from "./comment-thread/CommentThreadWithReplyEditor";
 export { default as BasicEditor } from "./editor/BasicEditor";
 export { default as CommentList } from "./comment-list/CommentList";
 export { default as GreetingOverlay } from "./greeting-overlay/GreetingOverlay";
 export { default as GuestForm } from "./auth-form/GuestForm";
 export { default as AuthForm } from "./auth-form/AuthForm";
 export { default as OnboardMessage } from "./onboard-message/OnboardMessage";
+export { default as CommentThread } from "./comment-thread/CommentThread";
+export { default as ReplyEditor } from "./editor/ReplyEditor";
