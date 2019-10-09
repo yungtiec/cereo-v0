@@ -1,4 +1,5 @@
 import axios from "axios";
+import { updateCommentListScrollOffset } from "store-popup";
 
 /**
  * ACTION TYPES
@@ -18,8 +19,6 @@ const initialState = {
   byId: {},
   isFetching: false,
   hasMore: true,
-  offset: 0,
-  limit: 3,
   ownersById: {},
   guestOwnersById: {}
 };
@@ -77,6 +76,8 @@ export const deleteComment = ({ commentId, rootId }) => async dispatch => {
       rootId,
       commentId
     });
+    if (!rootId)
+      window.parent.postMessage({ type: "COMMENT_DELETED", commentId }, "*");
   } catch (err) {
     console.log(err);
   }
@@ -87,13 +88,8 @@ export const fetchComments = () => async (dispatch, getState) => {
     const state = getState();
     if (!state.comment.hasMore) return;
     dispatch(requestComments());
-    const rawComments = await axios
-      .get("/api/comments", {
-        params: {
-          offset: state.comment.offset,
-          limit: state.comment.limit
-        }
-      })
+    const { comments: rawComments, count } = await axios
+      .get("/api/comments")
       .then(res => res.data);
     const { comments, owners, guestOwners } = rawComments.reduce(
       ({ comments, owners, guestOwners }, c) => {
@@ -139,19 +135,18 @@ export const fetchComments = () => async (dispatch, getState) => {
           Object.assign(obj, { [guestOwner.id]: guestOwner }),
         {}
       );
-    const hasMore =
-      commentIds.length && commentIds.length === state.comment.limit;
     dispatch({
       type: COMMENTS_FETCH_SUCCESS,
       commentIds,
       commentsById,
       ownersById,
       guestOwnersById,
-      hasMore,
-      offset: hasMore
-        ? state.comment.offset + state.comment.limit
-        : state.comment.offset
+      hasMore: false
     });
+    window.parent.postMessage(
+      { type: "COMMENTS_FETCH_SUCCESS", comments: rawComments },
+      "*"
+    );
     return comments;
   } catch (err) {
     console.log(err);
@@ -229,7 +224,6 @@ export default function(state = initialState, action) {
         ids: state.ids.concat(action.commentIds || []),
         isFetching: false,
         hasMore: action.hasMore,
-        offset: action.offset,
         ownersById: {
           ...state.ownersById,
           ...action.ownersById

@@ -6,7 +6,8 @@ import {
   registerUserScreenSize,
   updateEditorStatus,
   updatePageInfo,
-  resetEditorData
+  resetEditorData,
+  updateCommentItemStatus
 } from "store-popup";
 
 const PopupMessageListener = ({
@@ -14,11 +15,12 @@ const PopupMessageListener = ({
   updatePageInfo,
   updateEditorStatus,
   resetEditorData,
-  registerUserScreenSize
+  registerUserScreenSize,
+  updateCommentItemStatus
 }) => {
   useEffect(() => {
     bindEvent(window, "message", function(e) {
-      console.log("popup iframe");
+      console.log("popup iframe", e);
       if (e.data.type === "UPDATE_POPUP_STATUS") {
         console.log("UPDATE_POPUP_STATUS");
         updatePopup(e.data.popup);
@@ -38,6 +40,10 @@ const PopupMessageListener = ({
           screenHeight: e.data.screenHeight
         });
       }
+      if (e.data.type === "UPDATE_COMMENT_ITEM_STATUS") {
+        updateCommentItemStatus(e.data.commentId);
+        updatePopup(true);
+      }
     });
   }, []);
 
@@ -53,7 +59,8 @@ const actions = {
   registerUserScreenSize,
   updateEditorStatus,
   updatePageInfo,
-  resetEditorData
+  resetEditorData,
+  updateCommentItemStatus
 };
 
 export default connect(

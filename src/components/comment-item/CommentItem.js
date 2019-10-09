@@ -9,7 +9,7 @@ import {
   updateEditorStatus,
   setEditorData,
   deleteComment,
-  updateCommentItemStatus
+  updateCommentItemStatusAndSendMessage
 } from "store-popup";
 
 const CommentItem = ({
@@ -20,9 +20,10 @@ const CommentItem = ({
   updateEditorStatus,
   setEditorData,
   deleteComment,
-  updateCommentItemStatus,
+  updateCommentItemStatusAndSendMessage,
   me,
   rootId,
+  style,
   children
 }) => {
   var actions = [];
@@ -76,7 +77,7 @@ const CommentItem = ({
             onClick={e => {
               e.stopPropagation();
               e.preventDefault();
-              if (!rootId) updateCommentItemStatus(null);
+              if (!rootId) updateCommentItemStatusAndSendMessage(null);
               deleteComment({ commentId: comment.id, rootId: rootId });
             }}
           >
@@ -86,6 +87,7 @@ const CommentItem = ({
       : actions;
   return (
     <List.Item
+      style={style}
       className={classnames(CommentItemStyle, {
         [CommentItemHover]: hoverStyle
       })}
@@ -122,7 +124,7 @@ const actions = {
   updateEditorStatus,
   setEditorData,
   deleteComment,
-  updateCommentItemStatus
+  updateCommentItemStatusAndSendMessage
 };
 
 export default connect(

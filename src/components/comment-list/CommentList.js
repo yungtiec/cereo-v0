@@ -1,15 +1,16 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { connect } from "react-redux";
-import { Comment, Tooltip, List, Avatar, Spin } from "antd";
+import { FixedSizeList as List } from "react-window";
+import { Comment, Tooltip, Avatar, Spin } from "antd";
 import moment from "moment";
-import InfiniteScroll from "react-infinite-scroller";
 import { ScrollParentStyle } from "./CommentList.module.scss";
 import {
   getCommentListStatus,
+  getCommentListScrollOffset,
   updateCommentListStatus,
-  updateCommentItemStatus,
+  updateCommentItemStatusAndSendMessage,
+  updateCommentListScrollOffset,
   getComments,
-  hasMoreComments,
   isFetchingComments,
   fetchComments
 } from "store-popup";
@@ -18,62 +19,63 @@ import { CommentItem } from "components";
 const CommentList = ({
   fetchComments,
   updateCommentListStatus,
-  updateCommentItemStatus,
+  updateCommentItemStatusAndSendMessage,
+  updateCommentListScrollOffset,
   commentListIsOpen,
   isFetchingComments,
-  hasMoreComments,
-  comments
+  comments,
+  scrollOffset
 }) => {
-  const scrollParent = useRef(null);
-  return commentListIsOpen ? (
+  const reactWindow = useRef(null);
+  useEffect(() => {
+    scrollOffset && reactWindow.current.scrollTo(scrollOffset);
+    return () => {
+      updateCommentListScrollOffset(reactWindow.current.state.scrollOffset);
+    };
+  }, []);
+
+  return (
     <div key="comment-list" className={ScrollParentStyle}>
-      <InfiniteScroll
-        initialLoad={false}
-        pageStart={0}
-        loadMore={fetchComments}
-        hasMore={!isFetchingComments && hasMoreComments}
-        useWindow={false}
-        getScrollParent={() => scrollParent.current}
+      <List
+        layout="vertical"
+        itemData={comments || []}
+        width={358}
+        height={399}
+        itemCount={comments.length || 0}
+        itemSize={148}
+        ref={reactWindow}
       >
-        <List
-          itemLayout="horizontal"
-          dataSource={comments || []}
-          renderItem={comment => {
-            return (
-              <CommentItem
-                key={`comment-${comment.id}`}
-                onClick={() => updateCommentItemStatus(comment.id)}
-                comment={comment}
-                hoverStyle={true}
-              />
-            );
-          }}
-        >
-          {isFetchingComments && hasMoreComments && (
-            <div className="demo-loading-container">
-              <Spin />
-            </div>
-          )}
-        </List>
-      </InfiniteScroll>
+        {props => {
+          const comment = props.data[props.index];
+          return (
+            <CommentItem
+              style={props.style}
+              key={`comment-${comment.id}`}
+              onClick={() => updateCommentItemStatusAndSendMessage(comment.id)}
+              comment={comment}
+              hoverStyle={true}
+            />
+          );
+        }}
+      </List>
     </div>
-  ) : null;
+  );
 };
 
 const mapState = (state, ownProps) => {
   return {
     ...ownProps,
     isFetchingComments: isFetchingComments(state),
-    hasMoreComments: hasMoreComments(state),
     comments: getComments(state),
-    commentListIsOpen: getCommentListStatus(state)
+    scrollOffset: getCommentListScrollOffset(state)
   };
 };
 
 const actions = {
   fetchComments,
   updateCommentListStatus,
-  updateCommentItemStatus
+  updateCommentItemStatusAndSendMessage,
+  updateCommentListScrollOffset
 };
 
 export default connect(

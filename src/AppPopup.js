@@ -5,7 +5,8 @@ import {
   initEnvironment,
   fetchComments,
   me,
-  getGreetingOverlayStatus
+  getGreetingOverlayStatus,
+  getCommentListStatus
 } from "store-popup";
 import {
   PopupMessageListener,
@@ -23,7 +24,13 @@ import {
 } from "./AppPopup.module.scss";
 
 const AppPopup = props => {
-  const { initEnvironment, fetchComments, me, showGreetingOverlay } = props;
+  const {
+    initEnvironment,
+    fetchComments,
+    me,
+    showGreetingOverlay,
+    commentListIsOpen
+  } = props;
 
   useEffect(function() {
     initEnvironment();
@@ -44,7 +51,7 @@ const AppPopup = props => {
       ) : (
         <div className={WidgetContainer}>
           <BasicEditor />
-          <CommentList />
+          {commentListIsOpen ? <CommentList /> : null}
           <CommentThreadWithReplyEditor />
         </div>
       )}
@@ -57,7 +64,8 @@ const AppPopup = props => {
 const mapState = (state, ownProps) => {
   return {
     ...ownProps,
-    showGreetingOverlay: getGreetingOverlayStatus(state)
+    showGreetingOverlay: getGreetingOverlayStatus(state),
+    commentListIsOpen: getCommentListStatus(state)
   };
 };
 

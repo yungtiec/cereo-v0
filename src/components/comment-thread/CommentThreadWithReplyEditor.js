@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import {
   getCurrentCommentItem,
-  updateCommentItemStatus,
+  updateCommentItemStatusAndSendMessage,
   getCommentItemStatus
 } from "store-popup";
 import { Comment, Avatar, Icon } from "antd";
@@ -13,11 +13,14 @@ import { CommentThread, ReplyEditor } from "components";
 const CommentThreadWithReplyEditor = ({
   showCommentThread,
   comment,
-  updateCommentItemStatus
+  updateCommentItemStatusAndSendMessage
 }) =>
   showCommentThread ? (
     <div>
-      <div className={BackBtn} onClick={() => updateCommentItemStatus(null)}>
+      <div
+        className={BackBtn}
+        onClick={() => updateCommentItemStatusAndSendMessage(null)}
+      >
         <Icon type="arrow-left" />
         <span>Back</span>
       </div>
@@ -38,7 +41,7 @@ const mapState = (state, ownProps) => {
   };
 };
 
-const actions = { updateCommentItemStatus };
+const actions = { updateCommentItemStatusAndSendMessage };
 
 export default connect(
   mapState,

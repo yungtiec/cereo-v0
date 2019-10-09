@@ -29,32 +29,44 @@ router.get("/", async (req, res, next) => {
       siteId: 1,
       hierarchyLevel: 1
     };
-    const comments = await Comment.scope([
-      {
-        method: [
-          "main",
-          {
-            where,
-            include: [
-              {
-                model: User,
-                as: "owner",
-                required: false
-              },
-              {
-                model: Guest,
-                as: "guestOwner",
-                required: false
-              }
-            ],
-            order: [["updatedAt", "DESC"]],
-            ...req.query
-          }
-        ]
-      },
-      { method: ["withReplies"] }
-    ]).findAll();
-    res.send(comments);
+    const [comments, count] = await Promise.all([
+      Comment.scope([
+        {
+          method: [
+            "main",
+            {
+              where,
+              include: [
+                {
+                  model: User,
+                  as: "owner",
+                  required: false
+                },
+                {
+                  model: Guest,
+                  as: "guestOwner",
+                  required: false
+                }
+              ],
+              order: [["updatedAt", "DESC"]]
+            }
+          ]
+        },
+        { method: ["withReplies"] }
+      ]).findAll(req.query),
+      Comment.scope([
+        {
+          method: [
+            "main",
+            {
+              where
+            }
+          ]
+        }
+      ]).count()
+    ]);
+    console.log(count);
+    res.send({ comments, count });
   } catch (err) {
     next(err);
   }

@@ -18,7 +18,8 @@ import {
   getPageInfo,
   getEditorData,
   updateEditorStatus,
-  resetEditorData
+  resetEditorData,
+  updateCommentListScrollOffset
 } from "store-popup";
 
 class BasicEditor extends React.Component {
@@ -26,13 +27,14 @@ class BasicEditor extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err && values.text) {
-        if (!this.props.initialValue)
+        if (!this.props.initialValue) {
+          this.props.updateCommentListScrollOffset(0);
           this.props.postComment({
             text: values.text,
             deviceInfo: this.props.deviceInfo,
             pageInfo: this.props.pageInfo
           });
-        else {
+        } else {
           this.props.putComment({
             commentId: this.props.commentId,
             data: { text: values.text }
@@ -110,7 +112,8 @@ const actions = {
   postComment,
   putComment,
   resetEditorData,
-  updateEditorStatus
+  updateEditorStatus,
+  updateCommentListScrollOffset
 };
 
 export default connect(

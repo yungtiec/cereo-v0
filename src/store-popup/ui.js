@@ -6,6 +6,7 @@ const UPDATE_POPUP_STATUS = "UPDATE_POPUP_STATUS";
 const UPDATE_EDITOR_STATUS = "UPDATE_EDITOR_STATUS";
 const UPDATE_COMMENT_LIST_STATUS = "UPDATE_COMMENT_LIST_STATUS";
 const UPDATE_COMMENT_ITEM_STATUS = "UPDATE_COMMENT_ITEM_STATUS";
+const UPDATE_COMMENT_LIST_SCROLL_OFFSET = "UPDATE_COMMENT_LIST_SCROLL_OFFSET";
 
 /**
  * INITIAL STATE
@@ -15,7 +16,8 @@ const initialState = {
   popup: false,
   editor: false,
   commentItem: null,
-  commentList: true
+  commentList: true,
+  commentListScrollOffset: 0
 };
 
 /**
@@ -38,6 +40,11 @@ export const updateCommentListStatus = commentList => ({
   commentList
 });
 
+export const updateCommentListScrollOffset = commentListScrollOffset => ({
+  type: UPDATE_COMMENT_LIST_SCROLL_OFFSET,
+  commentListScrollOffset
+});
+
 export const updateCommentItemStatus = commentItem => ({
   type: UPDATE_COMMENT_ITEM_STATUS,
   commentItem
@@ -57,6 +64,14 @@ export const closePopup = () => dispatch => {
     "*"
   );
   dispatch({ type: UPDATE_POPUP_STATUS, popup: false });
+};
+
+export const updateCommentItemStatusAndSendMessage = commentItem => dispatch => {
+  dispatch({ type: UPDATE_COMMENT_ITEM_STATUS, commentItem });
+  window.parent.postMessage(
+    { type: "UPDATE_COMMENT_ITEM_STATUS", commentId: commentItem },
+    "*"
+  );
 };
 
 /**
@@ -89,6 +104,11 @@ export default function(state = initialState, action) {
         ...state,
         greetingOverlay: action.greetingOverlay
       };
+    case UPDATE_COMMENT_LIST_SCROLL_OFFSET:
+      return {
+        ...state,
+        commentListScrollOffset: action.commentListScrollOffset
+      };
     default:
       return state;
   }
@@ -103,6 +123,9 @@ export const getEditorStatus = state => state.ui.editor;
 
 export const getCommentListStatus = state =>
   !state.ui.editor && !state.ui.commentItem && state.ui.commentList;
+
+export const getCommentListScrollOffset = state =>
+  state.ui.commentListScrollOffset;
 
 export const getCommentItemStatus = state =>
   !state.ui.editor && !!state.ui.commentItem;
